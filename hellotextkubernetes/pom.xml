@@ -11,7 +11,7 @@
 	<groupId>com.ravi</groupId>
 	<artifactId>hellotextkubernetes</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>hellotextkubernetes</name>
+	<name>hello-text</name>
 	<description>Hello Text microservice for kubernetes deployement</description>
 	<properties>
 		<java.version>11</java.version>
@@ -27,8 +27,22 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-sleuth</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 
 		<dependency>

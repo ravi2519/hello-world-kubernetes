@@ -11,7 +11,7 @@
 	<groupId>com.ravi</groupId>
 	<artifactId>helloworldkubernetes</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>helloworldkubernetes</name>
+	<name>hello-world</name>
 	<description>Hello world microservice for kubernetes deployement</description>
 	<properties>
 		<java.version>11</java.version>
@@ -26,10 +26,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-sleuth</artifactId>
