@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloTextKubernetesController {
 
     @GetMapping( "/hello-text/from/{name}/of/{company}")
-    public HelloWorld doHelloText(
+    public HelloWorld doHelloWorld(
             @PathVariable String name,
             @PathVariable String company
     ) {

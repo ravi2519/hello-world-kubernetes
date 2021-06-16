@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.ravi</groupId>
 	<artifactId>helloworldkubernetes</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>hello-world</name>
 	<description>Hello world microservice for kubernetes deployement</description>
 	<properties>
