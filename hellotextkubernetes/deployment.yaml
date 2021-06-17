@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  labels:
+    app: hello-text
+  name: hello-text
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-text
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: hello-text
+    spec:
+      containers:
+      - image: ravr/ms2-hellotextkubernetes:0.0.3-SNAPSHOT
+        imagePullPolicy: Always
+        name: ms2-hellotextkubernetes
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: hello-text
+  name: hello-text
+  namespace: default
+spec:
+  ports:
+    - port: 8081
+      protocol: TCP
+      targetPort: 8081
+  selector:
+    app: hello-text
+  sessionAffinity: None
+  type: LoadBalancer
+
