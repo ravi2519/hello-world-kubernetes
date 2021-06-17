@@ -23,9 +23,12 @@ spec:
         app: hello-world
     spec:
       containers:
-      - image: ravr/ms1-helloworldkubernetes:0.0.3-SNAPSHOT
+      - image: ravr/ms1-helloworldkubernetes:0.0.4-SNAPSHOT
         imagePullPolicy: Always
         name: ms1-helloworldkubernetes
+        env:
+          - name: HELLO_TEXT_URI
+            value: http://hello-text
       restartPolicy: Always
 ---
 apiVersion: v1
