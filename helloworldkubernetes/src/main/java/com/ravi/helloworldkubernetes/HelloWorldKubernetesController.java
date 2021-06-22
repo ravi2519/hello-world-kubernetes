@@ -17,6 +17,7 @@ public class HelloWorldKubernetesController {
             @PathVariable String company
     ) {
 
+        // call hello-text using OpenFeign proxy client
         HelloWorld helloWorld = proxy.doHelloWorld(name, company);
 
         return new HelloWorld(

@@ -1,3 +1,4 @@
+# yaml for docker image deployment on K8S Cluster
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,11 +27,12 @@ spec:
       - image: ravr/ms1-helloworldkubernetes:0.0.4-SNAPSHOT
         imagePullPolicy: Always
         name: ms1-helloworldkubernetes
-        env:
-          - name: HELLO_TEXT_URI
-            value: http://hello-text
+        envFrom:
+          - configMapRef:
+              name: hello-world
       restartPolicy: Always
 ---
+# yaml for exposing the deployment as a service on K8S Cluster
 apiVersion: v1
 kind: Service
 metadata:
@@ -47,4 +49,13 @@ spec:
     app: hello-world
   sessionAffinity: None
   type: LoadBalancer
+---
+# yaml to provide custom environment variables for microservice communication.
+apiVersion: v1
+data:
+  HELLO_TEXT_URI: http://hello-text
+kind: ConfigMap
+metadata:
+  name: hello-world
+  namespace: default
 
