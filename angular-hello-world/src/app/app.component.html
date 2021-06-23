@@ -316,8 +316,11 @@
 </div>
 
 <div class="content" role="main">
-
-  Hello Angular!
+  <input id="name" [(ngModel)]="name" placeholder="Name" type="text">
+  <input id="company" [(ngModel)]="company" placeholder="Company" type="text">
+  <button (click)="callBackend($event)" label="Submit">Submit</button>
+  <br>
+  <h3>{{message}}</h3>
 
 </div>
 

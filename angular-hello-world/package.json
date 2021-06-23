@@ -1,6 +1,6 @@
 {
   "name": "angular-hello-world",
-  "version": "0.0.1",
+  "version": "0.0.3-SNAPSHOT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -24,7 +24,7 @@
     "zone.js": "~0.11.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1102.0",
+    "@angular-devkit/build-angular": "^0.1102.14",
     "@angular/cli": "~11.2.0",
     "@angular/compiler-cli": "~11.2.0",
     "@types/jasmine": "~3.6.0",

@@ -12,8 +12,8 @@ export class HelloworldService {
     private http: HttpClient
   ) { }
 
-  getResponse(): Observable<any> {
-    return this.http.get( `${environment.baseUrl}` + "/hello-world/from/ravi/of/ats");
+  getResponse(name:String, company:String): Observable<any> {
+    return this.http.get( `${environment.baseUrl}` + "/hello-world/from/" + name + "/of/" + company );
   }
   
 }
