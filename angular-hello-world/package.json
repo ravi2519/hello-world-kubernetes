@@ -1,6 +1,6 @@
 {
   "name": "angular-hello-world",
-  "version": "0.0.3-SNAPSHOT",
+  "version": "0.0.5-SNAPSHOT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
