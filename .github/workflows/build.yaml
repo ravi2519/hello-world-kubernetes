@@ -34,24 +34,14 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
 
-      # - name: Set up JDK 11
-      #   uses: actions/setup-java@v1
-      #   with:
-      #     java-version: 11
-
-      # # Runs a single command using the runners shell
-      # - name: Run build for hello-test
-      #   run: |
-      #     cd hellotextkubernetes
-      #     ./mvnw spring-boot:build-image
-          
-      - name: Docker push
-        env:
-          IMAGE_TAG: 0.0.3-SNAPSHOT
-          DOCKER_REPOSITORY: ravr
-          ARTIFACT: ms2-hellotextkubernetes
+      - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
+          context: ./
+          file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ms2-hellotextkubernetes:0.0.3-SNAPSHOT
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
