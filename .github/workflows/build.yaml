@@ -30,13 +30,14 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run build for hello-test
         env:
-          IMAGE_TAG: staging-${{ steps.date.outputs.date }}
+          IMAGE_TAG: 0.0.3-SNAPSHOT
           DOCKER_REPOSITORY: ravr
+          ARTIFACT: ms2-hellotextkubernetes
         run: |
           cd hellotextkubernetes
-          echo "./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$DOCKER_REPOSITORY/hellotextkubernetes:$IMAGE_TAG"
-          ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$DOCKER_REPOSITORY/hellotextkubernetes:$IMAGE_TAG
-          echo "docker tag $DOCKER_REPOSITORY $DOCKER_REPOSITORY/hellotextkubernetes:$IMAGE_TAG"
-          docker tag $DOCKER_REPOSITORY $DOCKER_REPOSITORY/hellotextkubernetes:$IMAGE_TAG
-          echo "docker push $DOCKER_REPOSITORY/hellotextkubernetes:$IMAGE_TAG"
-          docker push $DOCKER_REPOSITORY/hellotextkubernetes:$IMAGE_TAG
+          echo "./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$DOCKER_REPOSITORY/$ARTIFACT:$IMAGE_TAG"
+          ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$DOCKER_REPOSITORY/$ARTIFACT:$IMAGE_TAG
+          echo "docker tag $DOCKER_REPOSITORY $DOCKER_REPOSITORY/$ARTIFACT:$IMAGE_TAG"
+          docker tag $DOCKER_REPOSITORY $DOCKER_REPOSITORY/$ARTIFACT:$IMAGE_TAG
+          echo "docker push $DOCKER_REPOSITORY/$ARTIFACT:$IMAGE_TAG"
+          docker push $DOCKER_REPOSITORY/$ARTIFACT:$IMAGE_TAG
