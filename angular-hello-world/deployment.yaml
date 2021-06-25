@@ -1,32 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-text
+  name: angular-hello-world
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hello-text
+      app: angular-hello-world
   template:
     metadata:
       labels:
-        app: hello-text
+        app: angular-hello-world
     spec:
       containers:
-        - image: ravr/ms2-hellotextkubernetes:0.0.3-SNAPSHOT
+        - image: ravr/angular-hello-world:0.0.9-SNAPSHOT
           imagePullPolicy: Always
-          name: ms2-hellotextkubernetes
+          name: angular-hello-world
           ports:
-            - containerPort: 8081
+            - containerPort: 4200
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-text
+  name: angular-hello-world
 spec:
   type: ClusterIP
   ports:
-    - port: 8081
+    - port: 80
   selector:
-    app: hello-text
-
+    app: angular-hello-world

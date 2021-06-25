@@ -1,61 +1,43 @@
-# yaml for docker image deployment on K8S Cluster
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "1"
-  labels:
-    app: hello-world
   name: hello-world
-  namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: hello-world
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
   template:
     metadata:
       labels:
         app: hello-world
     spec:
       containers:
-      - image: ravr/ms1-helloworldkubernetes:0.0.4-SNAPSHOT
-        imagePullPolicy: Always
-        name: ms1-helloworldkubernetes
-        envFrom:
-          - configMapRef:
-              name: hello-world
-      restartPolicy: Always
+        - image: ravr/ms1-helloworldkubernetes:0.0.7-SNAPSHOT
+          imagePullPolicy: Always
+          name: ms1-helloworldkubernetes
+          ports:
+            - containerPort: 8080
+          env:
+            - name: HELLO_TEXT_URI
+              value: http://hello-text
 ---
-# yaml for exposing the deployment as a service on K8S Cluster
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    app: hello-world
   name: hello-world
-  namespace: default
 spec:
+  type: ClusterIP
   ports:
     - port: 8080
-      protocol: TCP
-      targetPort: 8080
   selector:
     app: hello-world
-  sessionAffinity: None
-  type: LoadBalancer
 ---
 # yaml to provide custom environment variables for microservice communication.
-apiVersion: v1
-data:
-  HELLO_TEXT_URI: http://hello-text
-kind: ConfigMap
-metadata:
-  name: hello-world
-  namespace: default
+#apiVersion: v1
+#data:
+#  HELLO_TEXT_URI: http://hello-text
+#kind: ConfigMap
+#metadata:
+#  name: hello-world
 
