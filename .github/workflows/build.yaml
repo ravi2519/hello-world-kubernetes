@@ -54,4 +54,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/$ARTIFACT:$IMAGE_TAG
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ms2-hellotextkubernetes:0.0.3-SNAPSHOT
