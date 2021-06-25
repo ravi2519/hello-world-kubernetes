@@ -41,15 +41,15 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run build for hello-test
-        env:
-          IMAGE_TAG: 0.0.3-SNAPSHOT
-          DOCKER_REPOSITORY: ravr
-          ARTIFACT: ms2-hellotextkubernetes
         run: |
           cd hellotextkubernetes
           ./mvnw spring-boot:build-image
           
       - name: Docker push
+        env:
+          IMAGE_TAG: 0.0.3-SNAPSHOT
+          DOCKER_REPOSITORY: ravr
+          ARTIFACT: ms2-hellotextkubernetes
         id: docker_build
         uses: docker/build-push-action@v2
         with:
