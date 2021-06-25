@@ -6,13 +6,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ravi.helloworldkubernetes.HelloWorldProxy;
+import com.ravi.helloworldkubernetes.HelloWorld;
+
 @RestController
 public class HelloWorldKubernetesController {
 
     @Autowired
     private HelloWorldProxy proxy;
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin
     @GetMapping( "/hello-world/from/{name}/of/{company}")
     public HelloWorld doHelloWorld(
             @PathVariable String name,
