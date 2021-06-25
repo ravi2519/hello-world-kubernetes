@@ -21,7 +21,19 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Check Out Repo 
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
       - name: Set up JDK 11
         uses: actions/setup-java@v1
         with:
@@ -35,9 +47,11 @@ jobs:
           ARTIFACT: ms2-hellotextkubernetes
         run: |
           cd hellotextkubernetes
-          echo "./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$DOCKER_REPOSITORY/$ARTIFACT:$IMAGE_TAG"
-          ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$DOCKER_REPOSITORY/$ARTIFACT:$IMAGE_TAG
-          echo "docker tag $DOCKER_REPOSITORY $DOCKER_REPOSITORY/$ARTIFACT:$IMAGE_TAG"
-          docker tag $DOCKER_REPOSITORY $DOCKER_REPOSITORY/$ARTIFACT:$IMAGE_TAG
-          echo "docker push $DOCKER_REPOSITORY/$ARTIFACT:$IMAGE_TAG"
-          docker push $DOCKER_REPOSITORY/$ARTIFACT:$IMAGE_TAG
+          ./mvnw spring-boot:build-image
+          
+      - name: Docker push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/$ARTIFACT:$IMAGE_TAG
