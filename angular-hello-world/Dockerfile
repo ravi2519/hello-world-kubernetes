@@ -1,5 +1,5 @@
 # Stage 1
-FROM node:10-alpine as build-step
+FROM node:lts-alpine as build-step
 RUN mkdir -p /app
 WORKDIR /app
 COPY angular-hello-world/package.json /app
