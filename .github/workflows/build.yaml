@@ -21,6 +21,7 @@ env:
   IMAGE_1: ${{ secrets.DOCKER_HUB_USERNAME }}/ms2-hellotextkubernetes
   IMAGE_2: ${{ secrets.DOCKER_HUB_USERNAME }}/ms1-helloworldkubernetes
   IMAGE_3: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-hello-world
+  DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -52,7 +53,7 @@ jobs:
           context: ./hellotextkubernetes
           file: ./hellotextkubernetes/Dockerfile
           push: true
-          tags: ${{ env.IMAGE_1 }}:0.0.3-SNAPSHOT
+          tags: ${{ env.IMAGE_1 }}:${{ env.GITHUB_SHA }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -64,7 +65,7 @@ jobs:
           context: ./helloworldkubernetes
           file: ./helloworldkubernetes/Dockerfile
           push: true
-          tags: ${{ env.IMAGE_2 }}:0.0.7-SNAPSHOT
+          tags: ${{ env.IMAGE_2 }}:${{ env.GITHUB_SHA }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -76,7 +77,7 @@ jobs:
           context: ./angular-hello-world
           file: ./angular-hello-world/Dockerfile
           push: true
-          tags: ${{ env.IMAGE_3 }}:0.0.10-SNAPSHOT
+          tags: ${{ env.IMAGE_3 }}:${{ env.GITHUB_SHA }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -100,10 +101,18 @@ jobs:
           location: ${{ secrets.GKE_ZONE }}
           credentials: ${{ secrets.GKE_SA_KEY }}
 
+      # Set up kustomize
+      - name: Set up Kustomize
+        run: |-
+          curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+          chmod u+x ./kustomize
+
+
       # Deploy the Docker image to the GKE cluster
       - name: Deploy
         run: |-
-          kubectl apply -f angular-hello-world/deployment.yaml
+          ./kustomize edit set image USERNAME/IMAGE3:TAG=$DOCKER_HUB_USERNAME/$IMAGE_3:$GITHUB_SHA
+          ./kustomize build angular-hello-world/ | kubectl apply -f -
           kubectl apply -f hellotextkubernetes/deployment.yaml
           kubectl apply -f helloworldkubernetes/deployment.yaml
           kubectl get pods -o wide

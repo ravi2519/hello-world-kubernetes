@@ -13,7 +13,8 @@ spec:
         app: angular-hello-world
     spec:
       containers:
-        - image: ravr/angular-hello-world:0.0.10-SNAPSHOT
+#        - image: ravr/angular-hello-world:0.0.10-SNAPSHOT
+        - image: USERNAME/IMAGE3:TAG
           imagePullPolicy: Always
           name: angular-hello-world
           ports:
