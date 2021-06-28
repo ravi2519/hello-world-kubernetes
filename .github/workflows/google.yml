@@ -23,9 +23,9 @@ env:
   DEPLOYMENT_NAME_1: ${{ secrets.DEPLOYMENT_NAME_1 }}
   DEPLOYMENT_NAME_2: ${{ secrets.DEPLOYMENT_NAME_2 }}
   DEPLOYMENT_NAME_3: ${{ secrets.DEPLOYMENT_NAME_3 }}
-  IMAGE_1: ${{ secrets.DOCKER_HUB_USERNAME }}/ms2-hellotextkubernetes:0.0.3-SNAPSHOT
-  IMAGE_2: ${{ secrets.DOCKER_HUB_USERNAME }}/ms1-helloworldkubernetes:0.0.7-SNAPSHOT
-  IMAGE_3: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-hello-world:0.0.9-SNAPSHOT
+  IMAGE_1: ${{ secrets.DOCKER_HUB_USERNAME }}/ms2-hellotextkubernetes
+  IMAGE_2: ${{ secrets.DOCKER_HUB_USERNAME }}/ms1-helloworldkubernetes
+  IMAGE_3: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-hello-world
 
 jobs:
   setup-build-publish-deploy:
