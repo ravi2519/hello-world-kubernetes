@@ -2,9 +2,9 @@
 FROM node:lts-alpine as build-step
 RUN mkdir -p /app
 WORKDIR /app
-COPY angular-hello-world/package.json /app
+COPY package.json /app
 RUN npm install
-COPY angular-hello-world/src angular-hello-world/* /app/
+COPY . /app
 RUN npm run build --prod
 
 # Stage 2
