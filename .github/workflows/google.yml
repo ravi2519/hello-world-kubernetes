@@ -58,8 +58,8 @@ jobs:
     # Build the Docker image
     - name: Build Image 1 ( hello-text )
       run: |-
+        cd hellotextkubernetes \
         docker build \
-          --file hellotextkubernetes/Dockerfile \
           --tag "gcr.io/$PROJECT_ID/$IMAGE_1:$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
@@ -68,8 +68,8 @@ jobs:
     # Build the Docker image
     - name: Build Image 2 ( hello-world )
       run: |-
+        cd helloworldkubernetes \
         docker build \
-          --file helloworldkubernetes/Dockerfile \
           --tag "gcr.io/$PROJECT_ID/$IMAGE_2:$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
@@ -78,8 +78,8 @@ jobs:
     # Build the Docker image
     - name: Build Image 3 ( angular-hello-world )
       run: |-
+        cd angular-hello-world \
         docker build \
-          --file angular-hello-world/Dockerfile \
           --tag "gcr.io/$PROJECT_ID/$IMAGE_3:$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
