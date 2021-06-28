@@ -62,8 +62,8 @@ jobs:
         id: docker_build_angular_hello_world
         uses: docker/build-push-action@v2
         with:
-          context: ./
-          file: ./angular-hello-world/Dockerfile
+          context: ./angular-hello-world
+          file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-hello-world:0.0.9-SNAPSHOT
 
