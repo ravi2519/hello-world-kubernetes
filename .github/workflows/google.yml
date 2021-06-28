@@ -86,10 +86,20 @@ jobs:
           .
 
     # Push the Docker image to Google Container Registry
-    - name: Publish
+    - name: Publish Image 1 ( hello-text )
       run: |-
-        docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
+        docker push "gcr.io/$PROJECT_ID/$IMAGE_1:$GITHUB_SHA"
 
+    # Push the Docker image to Google Container Registry
+    - name: Publish Image 2 ( hello-world )
+      run: |-
+        docker push "gcr.io/$PROJECT_ID/$IMAGE_2:$GITHUB_SHA"
+        
+    # Push the Docker image to Google Container Registry
+    - name: Publish Image 3 ( angular-hello-world )
+      run: |-
+        docker push "gcr.io/$PROJECT_ID/$IMAGE_3:$GITHUB_SHA"
+        
 #     # Set up kustomize
 #     - name: Set up Kustomize
 #       run: |-
