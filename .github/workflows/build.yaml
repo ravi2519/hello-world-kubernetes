@@ -21,51 +21,105 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Check Out Repo 
-        uses: actions/checkout@v2
+#      - name: Check Out Repo
+#        uses: actions/checkout@v2
+#
+#      - name: Login to Docker Hub
+#        uses: docker/login-action@v1
+#        with:
+#          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+#          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+#
+#      - name: Set up Docker Buildx
+#        id: buildx
+#        uses: docker/setup-buildx-action@v1
+#
+#      - name: Build and push hello-text
+#        id: docker_build_hello-text
+#        uses: docker/build-push-action@v2
+#        with:
+#          context: ./hellotextkubernetes
+#          file: ./hellotextkubernetes/Dockerfile
+#          push: true
+#          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ms2-hellotextkubernetes:0.0.3-SNAPSHOT
+#
+#      - name: Image digest
+#        run: echo ${{ steps.docker_build.outputs.digest }}
+#
+#      - name: Build and push hello-world
+#        id: docker_build_hello_world
+#        uses: docker/build-push-action@v2
+#        with:
+#          context: ./helloworldkubernetes
+#          file: ./helloworldkubernetes/Dockerfile
+#          push: true
+#          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ms1-helloworldkubernetes:0.0.7-SNAPSHOT
+#
+#      - name: Image digest
+#        run: echo ${{ steps.docker_build.outputs.digest }}
+#
+#      - name: Build and push angular-hello-world
+#        id: docker_build_angular_hello_world
+#        uses: docker/build-push-action@v2
+#        with:
+#          context: ./angular-hello-world
+#          file: ./angular-hello-world/Dockerfile
+#          push: true
+#          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-hello-world:0.0.9-SNAPSHOT
+#
+#      - name: Image digest
+#        run: echo ${{ steps.docker_build.outputs.digest }}
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
+      # Setup gcloud CLI
+      - name: Setup Cloud CLI
+        uses: google-github-actions/setup-gcloud@v0.2.0
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
+          service_account_key: ${{ secrets.GKE_SA_KEY }}
+          project_id: ${{ secrets.GKE_PROJECT }}
 
-      - name: Build and push hello-text
-        id: docker_build_hello-text
-        uses: docker/build-push-action@v2
+      # Configure docker to use the gcloud command-line tool as a credential helper
+      - run: |-
+          gcloud --quiet auth configure-docker
+
+      # Get the GKE credentials so we can deploy to the cluster
+      - name: Get GKE Credentials
+        uses: google-github-actions/get-gke-credentials@v0.2.1
         with:
-          context: ./hellotextkubernetes
-          file: ./hellotextkubernetes/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ms2-hellotextkubernetes:0.0.3-SNAPSHOT
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+          credentials: ${{ secrets.GKE_SA_KEY }}
 
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+      # Deploy the Docker image to the GKE cluster
+      - name: Deploy
+        run: |-
+          kubectl apply -f angular-hello-world/deployment.yaml
+          kubectl apply -f hellotextkubernetes/deployment.yaml
+          kubectl apply -f helloworldkubernetes/deployment.yaml
+          kubectl get pods -o wide
+          kubectl get services -o wide
 
-      - name: Build and push hello-world
-        id: docker_build_hello_world
-        uses: docker/build-push-action@v2
-        with:
-          context: ./helloworldkubernetes
-          file: ./helloworldkubernetes/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ms1-helloworldkubernetes:0.0.7-SNAPSHOT
+#      # Set the target Azure Kubernetes Service (AKS) cluster.
+#      - name: Login to AKS
+#        uses: azure/aks-set-context@v1
+#        with:
+#          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+#          cluster-name: ${{ env.CLUSTER_NAME }}
+#          resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
+#
+#      # Create namespace if doesn't exist
+#      - name: Create Namespace on AKS if doesn't exists
+#        run: |
+#          kubectl create namespace ${{ env.NAMESPACE }} --dry-run -o json | kubectl apply -f -
+#
+#      # Deploy app to AKS
+#      - uses: azure/k8s-deploy@v1
+#        with:
+#          manifests: |
+#            manifests/deployment.yml
+#            manifests/service.yml
+#          images: |
+#            ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+#          imagepullsecrets: |
+#            ${{ env.SECRET }}
+#          namespace: ${{ env.NAMESPACE }}
 
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
-
-      - name: Build and push angular-hello-world
-        id: docker_build_angular_hello_world
-        uses: docker/build-push-action@v2
-        with:
-          context: ./angular-hello-world
-          file: ./angular-hello-world/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-hello-world:0.0.9-SNAPSHOT
-
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
