@@ -34,29 +34,29 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build and push hello-text
-        id: docker_build_hello-text
-        uses: docker/build-push-action@v2
-        with:
-          context: ./
-          file: ./hellotextkubernetes/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ms2-hellotextkubernetes:0.0.3-SNAPSHOT
+#       - name: Build and push hello-text
+#         id: docker_build_hello-text
+#         uses: docker/build-push-action@v2
+#         with:
+#           context: ./
+#           file: ./hellotextkubernetes/Dockerfile
+#           push: true
+#           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ms2-hellotextkubernetes:0.0.3-SNAPSHOT
 
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+#       - name: Image digest
+#         run: echo ${{ steps.docker_build.outputs.digest }}
 
-      - name: Build and push hello-world
-        id: docker_build_hello_world
-        uses: docker/build-push-action@v2
-        with:
-          context: ./
-          file: ./helloworldkubernetes/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ms1-helloworldkubernetes:0.0.7-SNAPSHOT
+#       - name: Build and push hello-world
+#         id: docker_build_hello_world
+#         uses: docker/build-push-action@v2
+#         with:
+#           context: ./
+#           file: ./helloworldkubernetes/Dockerfile
+#           push: true
+#           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ms1-helloworldkubernetes:0.0.7-SNAPSHOT
 
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+#       - name: Image digest
+#         run: echo ${{ steps.docker_build.outputs.digest }}
 
       - name: Build and push angular-hello-world
         id: docker_build_angular_hello_world
