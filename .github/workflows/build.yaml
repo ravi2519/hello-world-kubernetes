@@ -15,6 +15,12 @@ env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
   GKE_ZONE: ${{ secrets.GKE_ZONE }}
+  DEPLOYMENT_NAME_1: ${{ secrets.DEPLOYMENT_NAME_1 }}
+  DEPLOYMENT_NAME_2: ${{ secrets.DEPLOYMENT_NAME_2 }}
+  DEPLOYMENT_NAME_3: ${{ secrets.DEPLOYMENT_NAME_3 }}
+  IMAGE_1: ${{ secrets.DOCKER_HUB_USERNAME }}/ms2-hellotextkubernetes
+  IMAGE_2: ${{ secrets.DOCKER_HUB_USERNAME }}/ms1-helloworldkubernetes
+  IMAGE_3: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-hello-world
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -39,29 +45,29 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
 
-#      - name: Build and push hello-text
-#        id: docker_build_hello-text
-#        uses: docker/build-push-action@v2
-#        with:
-#          context: ./hellotextkubernetes
-#          file: ./hellotextkubernetes/Dockerfile
-#          push: true
-#          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ms2-hellotextkubernetes:0.0.3-SNAPSHOT
-#
-#      - name: Image digest
-#        run: echo ${{ steps.docker_build.outputs.digest }}
-#
-#      - name: Build and push hello-world
-#        id: docker_build_hello_world
-#        uses: docker/build-push-action@v2
-#        with:
-#          context: ./helloworldkubernetes
-#          file: ./helloworldkubernetes/Dockerfile
-#          push: true
-#          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ms1-helloworldkubernetes:0.0.7-SNAPSHOT
-#
-#      - name: Image digest
-#        run: echo ${{ steps.docker_build.outputs.digest }}
+      - name: Build and push hello-text
+        id: docker_build_hello-text
+        uses: docker/build-push-action@v2
+        with:
+          context: ./hellotextkubernetes
+          file: ./hellotextkubernetes/Dockerfile
+          push: true
+          tags: ${{ env.$IMAGE_1 }}:0.0.3-SNAPSHOT
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+      - name: Build and push hello-world
+        id: docker_build_hello_world
+        uses: docker/build-push-action@v2
+        with:
+          context: ./helloworldkubernetes
+          file: ./helloworldkubernetes/Dockerfile
+          push: true
+          tags: ${{ env.$IMAGE_2 }}:0.0.7-SNAPSHOT
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
 
       - name: Build and push angular-hello-world
         id: docker_build_angular_hello_world
@@ -70,7 +76,7 @@ jobs:
           context: ./angular-hello-world
           file: ./angular-hello-world/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-hello-world:0.0.9-SNAPSHOT
+          tags: ${{ env.$IMAGE_3 }}:0.0.10-SNAPSHOT
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
