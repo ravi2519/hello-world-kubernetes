@@ -53,7 +53,7 @@ jobs:
           context: ./hellotextkubernetes
           file: ./hellotextkubernetes/Dockerfile
           push: true
-          tags: ${{ env.IMAGE_1 }}:${{ env.GITHUB_SHA }}
+          tags: ${{ env.IMAGE_1 }}:${{ github.sha }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -65,7 +65,7 @@ jobs:
           context: ./helloworldkubernetes
           file: ./helloworldkubernetes/Dockerfile
           push: true
-          tags: ${{ env.IMAGE_2 }}:${{ env.GITHUB_SHA }}
+          tags: ${{ env.IMAGE_2 }}:${{ github.sha }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -77,7 +77,7 @@ jobs:
           context: ./angular-hello-world
           file: ./angular-hello-world/Dockerfile
           push: true
-          tags: ${{ env.IMAGE_3 }}:${{ env.GITHUB_SHA }}
+          tags: ${{ env.IMAGE_3 }}:${{ github.sha }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-world-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+    - http:
+        paths:
+          - backend:
+              service:
+                name: hello-world
+                port:
+                  number: 8080
+            path: /hello-world
+            pathType: Prefix
+          - backend:
+              service:
+                name: angular-hello-world
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
