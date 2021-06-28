@@ -113,7 +113,7 @@ jobs:
         run: |-
           cd angular-hello-world
           ../kustomize edit set image USERNAME/IMAGE3:TAG=$DOCKER_HUB_USERNAME/$IMAGE_3:$GITHUB_SHA
-          ../kustomize build angular-hello-world | kubectl apply -f -
+          ../kustomize build . | kubectl apply -f -
           cd ../
           kubectl apply -f hellotextkubernetes/deployment.yaml
           kubectl apply -f helloworldkubernetes/deployment.yaml
