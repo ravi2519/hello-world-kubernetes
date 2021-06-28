@@ -4,7 +4,7 @@ RUN mkdir -p /app
 WORKDIR /app
 COPY angular-hello-world/package.json /app
 RUN npm install
-COPY angular-hello-world/* /app
+COPY angular-hello-world/src angular-hello-world/* /app/
 RUN npm run build --prod
 
 # Stage 2
