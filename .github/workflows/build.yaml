@@ -46,29 +46,29 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build and push hello-text
-        id: docker_build_hello-text
-        uses: docker/build-push-action@v2
-        with:
-          context: ./hellotextkubernetes
-          file: ./hellotextkubernetes/Dockerfile
-          push: true
-          tags: ${{ env.IMAGE_1 }}:${{ github.sha }}
-
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
-
-      - name: Build and push hello-world
-        id: docker_build_hello_world
-        uses: docker/build-push-action@v2
-        with:
-          context: ./helloworldkubernetes
-          file: ./helloworldkubernetes/Dockerfile
-          push: true
-          tags: ${{ env.IMAGE_2 }}:${{ github.sha }}
-
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+#      - name: Build and push hello-text
+#        id: docker_build_hello-text
+#        uses: docker/build-push-action@v2
+#        with:
+#          context: ./hellotextkubernetes
+#          file: ./hellotextkubernetes/Dockerfile
+#          push: true
+#          tags: ${{ env.IMAGE_1 }}:${{ github.sha }}
+#
+#      - name: Image digest
+#        run: echo ${{ steps.docker_build.outputs.digest }}
+#
+#      - name: Build and push hello-world
+#        id: docker_build_hello_world
+#        uses: docker/build-push-action@v2
+#        with:
+#          context: ./helloworldkubernetes
+#          file: ./helloworldkubernetes/Dockerfile
+#          push: true
+#          tags: ${{ env.IMAGE_2 }}:${{ github.sha }}
+#
+#      - name: Image digest
+#        run: echo ${{ steps.docker_build.outputs.digest }}
 
       - name: Build and push angular-hello-world
         id: docker_build_angular_hello_world
@@ -111,8 +111,10 @@ jobs:
       # Deploy the Docker image to the GKE cluster
       - name: Deploy
         run: |-
+          cd angular-hello-world
           ./kustomize edit set image USERNAME/IMAGE3:TAG=$DOCKER_HUB_USERNAME/$IMAGE_3:$GITHUB_SHA
           ./kustomize build angular-hello-world/ | kubectl apply -f -
+          cd ../
           kubectl apply -f hellotextkubernetes/deployment.yaml
           kubectl apply -f helloworldkubernetes/deployment.yaml
           kubectl get pods -o wide
