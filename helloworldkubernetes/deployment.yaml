@@ -13,14 +13,11 @@ spec:
         app: hello-world
     spec:
       containers:
-        - image: ravr/ms1-helloworldkubernetes:0.0.7-SNAPSHOT
+        - image: USERNAME/IMAGE2:TAG
           imagePullPolicy: Always
           name: ms1-helloworldkubernetes
           ports:
             - containerPort: 8080
-          env:
-            - name: HELLO_TEXT_URI
-              value: http://hello-text
 ---
 apiVersion: v1
 kind: Service

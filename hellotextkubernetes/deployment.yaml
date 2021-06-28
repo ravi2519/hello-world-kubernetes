@@ -13,7 +13,7 @@ spec:
         app: hello-text
     spec:
       containers:
-        - image: ravr/ms2-hellotextkubernetes:0.0.3-SNAPSHOT
+        - image: USERNAME/IMAGE1:TAG
           imagePullPolicy: Always
           name: ms2-hellotextkubernetes
           ports:
