@@ -63,7 +63,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./angular-hello-world
-          file: ./Dockerfile
+          file: ./angular-hello-world/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-hello-world:0.0.9-SNAPSHOT
 
