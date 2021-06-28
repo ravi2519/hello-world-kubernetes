@@ -9,4 +9,4 @@ RUN npm run build --prod
 
 # Stage 2
 FROM nginx:stable-alpine
-COPY --from=build-step /app/docs /usr/share/nginx/html
+COPY --from=build-step /app/dist/angular-hello-world /usr/share/nginx/html
