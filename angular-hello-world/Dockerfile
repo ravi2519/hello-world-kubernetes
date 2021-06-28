@@ -1,4 +1,12 @@
-FROM nginx:stable-alpine
-COPY /dist/angular-hello-world /usr/share/nginx/html/
-COPY ./nginx-custom.conf /etc/nginx/conf.d/defaut.conf
+# Stage 1
+FROM node:10-alpine as build-step
+RUN mkdir -p /app
+WORKDIR /app
+COPY angular-hello-world/package.json /app
+RUN npm install
+COPY angular-hello-world/* /app
+RUN npm run build --prod
 
+# Stage 2
+FROM nginx:stable-alpine
+COPY --from=build-step /app/docs /usr/share/nginx/html
