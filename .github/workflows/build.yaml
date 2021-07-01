@@ -22,11 +22,11 @@ env:
   IMAGE_2: ${{ secrets.DOCKER_HUB_USERNAME }}/ms1-helloworldkubernetes
   IMAGE_3: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-hello-world
   DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-  CLUSTER_NAME: { cluster-name }
-  CLUSTER_RESOURCE_GROUP: { resource-group-name }
-  NAMESPACE: { namespace-name }
-  SECRET: { secret-name }
-  APP_NAME: { app-name }
+  AKS_CLUSTER: ${{ secrets.AKS_CLUSTER }}
+  CLUSTER_RESOURCE_GROUP: ${{ secrets.AKS_RESOURCE_GROUP }}
+#  NAMESPACE: { namespace-name }
+#  SECRET: { secret-name }
+#  APP_NAME: { app-name }
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
