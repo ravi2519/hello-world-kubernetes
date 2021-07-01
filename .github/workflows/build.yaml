@@ -41,6 +41,10 @@ jobs:
       - name: Check Out Repo
         uses: actions/checkout@v2
 
+      - uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
       # Set the target Azure Kubernetes Service (AKS) cluster.
       - name: Login to AKS
         uses: azure/aks-set-context@v1
