@@ -136,7 +136,7 @@ jobs:
           cd ../helloworldkubernetes
           ../kustomize edit set image USERNAME/IMAGE2:TAG=$IMAGE_2:$GITHUB_SHA
           ../kustomize build . | kubectl apply -f -
-          cd ../helloworldkubernetes
+          cd ../hellotextkubernetes
           ../kustomize edit set image USERNAME/IMAGE1:TAG=$IMAGE_1:$GITHUB_SHA
           ../kustomize build . | kubectl apply -f -
           kubectl get pods -o wide
