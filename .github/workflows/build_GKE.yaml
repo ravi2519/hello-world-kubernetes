@@ -22,11 +22,6 @@ env:
   IMAGE_2: ${{ secrets.DOCKER_HUB_USERNAME }}/ms1-helloworldkubernetes
   IMAGE_3: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-hello-world
   DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-  CLUSTER_NAME: { cluster-name }
-  CLUSTER_RESOURCE_GROUP: { resource-group-name }
-  NAMESPACE: { namespace-name }
-  SECRET: { secret-name }
-  APP_NAME: { app-name }
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -85,34 +80,26 @@ jobs:
           tags: ${{ env.IMAGE_3 }}:${{ github.sha }}
 
       - name: Image digest
-        run: |-
-          echo ${{ steps.docker_build.outputs.digest }}
+        run: echo ${{ steps.docker_build.outputs.digest }}
 
-      # Set the target Azure Kubernetes Service (AKS) cluster.
-      - name: Login to AKS
-        uses: azure/aks-set-context@v1
+      # Setup gcloud CLI
+      - name: Setup Cloud CLI
+        uses: google-github-actions/setup-gcloud@v0.2.0
         with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'
-          cluster-name: ${{ env.CLUSTER_NAME }}
-          resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
+          service_account_key: ${{ secrets.GKE_SA_KEY }}
+          project_id: ${{ secrets.GKE_PROJECT }}
 
-#      # Create namespace if doesn't exist
-#      - name: Create Namespace on AKS if doesn't exists
-#        run: |
-#          kubectl create namespace ${{ env.NAMESPACE }} --dry-run -o json | kubectl apply -f -
-#
-#      # Deploy app to AKS
-#      - uses: azure/k8s-deploy@v1
-#        with:
-#          manifests: |
-#            manifests/deployment.yml
-#            manifests/service.yml
-#          images: |
-#            ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
-#          imagepullsecrets: |
-#            ${{ env.SECRET }}
-#          namespace: ${{ env.NAMESPACE }}
+      # Configure docker to use the gcloud command-line tool as a credential helper
+      - run: |-
+          gcloud --quiet auth configure-docker
 
+      # Get the GKE credentials so we can deploy to the cluster
+      - name: Get GKE Credentials
+        uses: google-github-actions/get-gke-credentials@v0.2.1
+        with:
+          cluster_name: ${{ secrets.GKE_CLUSTER }}
+          location: ${{ secrets.GKE_ZONE }}
+          credentials: ${{ secrets.GKE_SA_KEY }}
 
       # Set up kustomize
       - name: Set up Kustomize
@@ -135,3 +122,29 @@ jobs:
           ../kustomize build . | kubectl apply -f -
           kubectl get pods -o wide
           kubectl get services -o wide
+
+#      # Set the target Azure Kubernetes Service (AKS) cluster.
+#      - name: Login to AKS
+#        uses: azure/aks-set-context@v1
+#        with:
+#          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+#          cluster-name: ${{ env.CLUSTER_NAME }}
+#          resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
+#
+#      # Create namespace if doesn't exist
+#      - name: Create Namespace on AKS if doesn't exists
+#        run: |
+#          kubectl create namespace ${{ env.NAMESPACE }} --dry-run -o json | kubectl apply -f -
+#
+#      # Deploy app to AKS
+#      - uses: azure/k8s-deploy@v1
+#        with:
+#          manifests: |
+#            manifests/deployment.yml
+#            manifests/service.yml
+#          images: |
+#            ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+#          imagepullsecrets: |
+#            ${{ env.SECRET }}
+#          namespace: ${{ env.NAMESPACE }}
+
