@@ -12,13 +12,15 @@ spec:
         paths:
           - backend:
               service:
-               name: hello-world
-               port:
-                number: 8080
+                name: hello-world
+                port:
+                  number: 8080
             path: /hello-world
             pathType: Prefix
           - backend:
-              serviceName: angular-hello-world
-              servicePort: 80
+              service:
+                name: angular-hello-world
+                port:
+                  number: 80
             path: /
             pathType: Prefix
