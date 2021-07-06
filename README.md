@@ -40,6 +40,7 @@ Create either of AKS or GKE cluster as per your requirement.
 - [Install ingress controller on AKS](https://docs.microsoft.com/en-us/azure/aks/ingress-basic)
 
 ![alt text](./resources/images/ingress.JPG)
+
 REST_URI: `from/Groot/of/PlanetX`
 RESPONSE: `Hello Groot from PlantX`
 
