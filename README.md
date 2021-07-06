@@ -24,13 +24,7 @@ There are three microservices in this monorepo. You are free to separate them ou
 - hello-world: Spring boot microservice that just make a Get request to `hello-text` microservice to fetch some response. 
 - hello-text: Spring boot microservice that will send back a text based upon the input received.
 
-```mermaid
-sequenceDiagram
-angular-hello-world ->> hello-world: /hello-world/from/Groot/of/PlanetX
-hello-world->>hello-text: /hello-text/from/Groot/of/PlanetX
-hello-text ->> hello-world: Hello Groot from PlanetX
-hello-world ->> angular-hello-world: Hello Groot from PlanetX
-```
+![alt text](./resources/images/flow-chart.JPG)
 
 ## 2. AKS/GKE Cluster
 Create either of AKS or GKE cluster as per your requirement. 
@@ -45,19 +39,7 @@ Create either of AKS or GKE cluster as per your requirement.
 - A bare-minimum AKS cluster can be created easily from [Azure Portal](https://portal.azure.com/).  
 - [Install ingress controller on AKS](https://docs.microsoft.com/en-us/azure/aks/ingress-basic)
 
-----------------------------------------------------------------
-```mermaid
-graph TD
-A((Outside World)) --> B[Ingress Controller]
-B -- 1. Load UI --> C[angular-hello-world]
-C -- 1. UI Loaded --> B
-C -- 2. REST_URI --> B
-B -- 2. REST_URI --> D[hello-world]
-D -- 2. REST_URI --> E[hello-text]
-E -- 2. RESPONSE --> D
-D -- 2. RESPONSE --> B
-```
-----------------------------------------------------------------
+![alt text](./resources/images/ingress.JPG)
 REST_URI: `from/Groot/of/PlanetX`
 RESPONSE: `Hello Groot from PlantX`
 
