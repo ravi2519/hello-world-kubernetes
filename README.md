@@ -33,11 +33,13 @@ Create either of AKS or GKE cluster as per your requirement.
 - Google Cloud provides [Google Kuberenets Engine](https://cloud.google.com/kubernetes-engine). 
 - A bare-minimum GKE cluster can be created easily from [Google Cloud Console](https://console.cloud.google.com/kubernetes).  
 - [Install ingress controller on GKE](https://cloud.google.com/community/tutorials/nginx-ingress-gke)
+- Load ingress resource settings from `./ingress-resource-gke.yaml`
 
 ### AKS Cluster
 - Azure Cloud provides [Azure Kuberenets Services](https://azure.microsoft.com/en-in/services/kubernetes-service/). 
 - A bare-minimum AKS cluster can be created easily from [Azure Portal](https://portal.azure.com/).  
 - [Install ingress controller on AKS](https://docs.microsoft.com/en-us/azure/aks/ingress-basic)
+- Load ingress resource settings from `./ingress-resource-aks.yaml`
 
 ![alt text](./resources/images/ingress.JPG)
 

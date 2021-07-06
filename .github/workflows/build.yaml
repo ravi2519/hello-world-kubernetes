@@ -12,9 +12,6 @@ on:
   workflow_dispatch:
 
 env:
-  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
-  GKE_ZONE: ${{ secrets.GKE_ZONE }}
   DEPLOYMENT_NAME_1: ${{ secrets.DEPLOYMENT_NAME_1 }}
   DEPLOYMENT_NAME_2: ${{ secrets.DEPLOYMENT_NAME_2 }}
   DEPLOYMENT_NAME_3: ${{ secrets.DEPLOYMENT_NAME_3 }}
@@ -24,9 +21,6 @@ env:
   DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
   AKS_CLUSTER: ${{ secrets.AKS_CLUSTER }}
   CLUSTER_RESOURCE_GROUP: ${{ secrets.AKS_RESOURCE_GROUP }}
-#  NAMESPACE: { namespace-name }
-#  SECRET: { secret-name }
-#  APP_NAME: { app-name }
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -101,25 +95,6 @@ jobs:
           echo ${{ steps.docker_build.outputs.digest }}
 
 
-
-#      # Create namespace if doesn't exist
-#      - name: Create Namespace on AKS if doesn't exists
-#        run: |
-#          kubectl create namespace ${{ env.NAMESPACE }} --dry-run -o json | kubectl apply -f -
-#
-#      # Deploy app to AKS
-#      - uses: azure/k8s-deploy@v1
-#        with:
-#          manifests: |
-#            manifests/deployment.yml
-#            manifests/service.yml
-#          images: |
-#            ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
-#          imagepullsecrets: |
-#            ${{ env.SECRET }}
-#          namespace: ${{ env.NAMESPACE }}
-
-
       # Set up kustomize
       - name: Set up Kustomize
         run: |-
@@ -127,7 +102,7 @@ jobs:
           chmod u+x ./kustomize
 
 
-      # Deploy the Docker image to the GKE cluster
+      # Deploy the Docker image to the AKS cluster
       - name: Deploy
         run: |-
           cd angular-hello-world
