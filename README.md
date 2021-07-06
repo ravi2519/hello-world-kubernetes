@@ -41,6 +41,9 @@ Create either of AKS or GKE cluster as per your requirement.
 - [Install ingress controller on AKS](https://docs.microsoft.com/en-us/azure/aks/ingress-basic)
 - Load ingress resource settings from `./ingress-resource-aks.yaml`
 
+After installing the Ingress Controller copy the "External IP" of the Ingress Service and replace it inside `./angular-hello-world/src/environments/environment.prod.ts` for `baseUrl`.
+This External IP will be the one which can be used to run Angular app after deployment.
+
 ![alt text](./resources/images/ingress.JPG)
 
 REST_URI: `from/Groot/of/PlanetX`
